@@ -9,15 +9,34 @@ import com.google.cloud.vision.v1.Image;
 import com.google.cloud.vision.v1.ImageAnnotatorClient;
 import com.google.cloud.vision.v1.ImageSource;
 import com.google.cloud.vision.v1.TextAnnotation;
-import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@AllArgsConstructor
 public class SmartDocument implements Document {
     public String gcsPath;
+    private String readText;
+    private final String docName;
+
+    public SmartDocument(String path) {
+        gcsPath = path;
+        String[] splitPath = path.split("/");
+        docName = splitPath[splitPath.length-1];
+    }
+
+    public String getDocName() {
+        return docName;
+    }
+
+    public String getReadText() {
+        return readText;
+    }
+
+    @Override
+    public String getGcsPath() {
+        return gcsPath;
+    }
 
     @SneakyThrows
     public String parse() {
@@ -37,9 +56,11 @@ public class SmartDocument implements Document {
 
             for (AnnotateImageResponse res : responses) {
                 TextAnnotation annotation = res.getFullTextAnnotation();
-                return annotation.getText();
+                readText = annotation.getText();
+                return readText;
             }
         }
         return "";
     }
+
 }

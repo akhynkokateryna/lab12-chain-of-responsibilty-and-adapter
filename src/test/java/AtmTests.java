@@ -1,7 +1,12 @@
-package atm;
+import atm.Handler;
+import atm.Handler20;
+import atm.Handler5;
+import atm.Handler50;
+import org.junit.jupiter.api.Test;
 
-public class ATM {
-    public static void main(String[] args) {
+public class AtmTests {
+    @Test
+    public void test1(){
         Handler handler5 = new Handler5();
         Handler handler20 = new Handler20();
         Handler handler50 = new Handler50();
